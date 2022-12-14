@@ -6,7 +6,7 @@ class Test_new_joke():
     def __init__(self):
         pass
 
-    def Test_create_new_random_joke(self):
+    def est_create_new_random_joke(self):
         """Создание случайной шутки"""
         url = "https://api.chucknorris.io/jokes/random"
 
@@ -44,7 +44,7 @@ class Test_new_joke():
 
 ######   получение рандомной штуки из категории спорт
 
-    def Test_create_new_random_categories_joke(self):
+    def est_create_new_random_categories_joke(self):
         """Создание случайной шутки в категории спорт"""
 
         category = "sport"
@@ -60,10 +60,10 @@ class Test_new_joke():
         result3.encoding = 'utf-8'  # эта строка желательна, лучше ее вставлять, чтобы был понятный формат
         print(result3.text)
         check3 = result3.json()
-        check_info3 = check3.get("categories")  # вытаскиваем именно значение ключа ""категории", хотим посмотреть, что там
+        check_info3 = check3.get("catego2ries")  # вытаскиваем именно значение ключа ""категории", хотим посмотреть, что там
         print(check_info3)
         assert check_info3 == ["sport"]  # проверка на то, что ключ занчения Категории равен sport
         print("категория верна")
 
 sport_joke = Test_new_joke()
-sport_joke.Test_create_new_random_categories_joke()
+sport_joke.est_create_new_random_categories_joke()
