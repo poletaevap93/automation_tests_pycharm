@@ -67,5 +67,52 @@ class Test_new_location():
             print("запрос ошибочный")
 
 
+        """ИЗМЕНЕНИЕ НОВОЙ ЛОКАЦИИ. (positive test) """
+        print("______________")
+
+        put_resource = "/maps/api/place/update/json"
+        put_url = base_url + put_resource + key
+        json_for_update_new_location = {
+                "place_id": place_id,
+                "address": "100 Lenina street, RU",
+                "key": "qaclick123"
+            }
+        result_put = requests.put(put_url, json = json_for_update_new_location)
+        print(result_put.text)
+        print("Статус код: " + str(result_put.status_code))
+        assert 200 == result_put.status_code  # это наша проверка. цифра 200 это то, что мы ожидаем, == это сравнение
+        if result_put.status_code == 200:
+            print("Успешно. Проверка изменения нового места прошла успешно")
+        else:
+            print("запрос ошибочный")
+
+        # теперь проверка сообщения ответа позитивного теста
+        check_put = result_put.json()
+        check_info = check_put.get("msg")
+        assert check_info == "Address successfully updated"
+        print("Сообщение верно")
+
+
+        """ИЗМЕНЕНИЕ НОВОЙ ЛОКАЦИИ. (negative test) """
+        print("______________")
+
+        put_resource = "/maps/api/place/update/json"
+        put_url = base_url + put_resource + key
+        json_for_update_new_location = {
+                "place_id": 5555, # вставляем кривой ID места
+                "address": "100 Lenina street, RU",
+                "key": "qaclick123"
+            }
+        result_put = requests.put(put_url, json = json_for_update_new_location)
+        print(result_put.text)
+        print("Статус код: " + str(result_put.status_code))
+        assert 404 == result_put.status_code
+        if result_put.status_code == 404:
+            print("Отработано успешно. Место не изменено ")
+        else:
+            print("запрос ошибочный")
+
+
 new_place = Test_new_location()
 new_place.create_new_location()
+
