@@ -9,6 +9,7 @@ class Test_new_location():
         base_url = "https://rahulshettyacademy.com" # базовая URL для всех запросов
         key = "?key=qaclick123"     # параметр для всех запросов
 
+
         """СОЗДАНИЕ НОВОЙ ЛОКАЦИИ. POST"""
         post_resource = "/maps/api/place/add/json"     # ресурс метода POST
         post_url = base_url + post_resource + key
@@ -88,8 +89,8 @@ class Test_new_location():
 
         # теперь проверка сообщения ответа позитивного теста
         check_put = result_put.json()
-        check_info = check_put.get("msg")
-        assert check_info == "Address successfully updated"
+        check_info_put = check_put.get("msg")
+        assert check_info_put == "Address successfully updated"
         print("Сообщение верно")
 
 
@@ -111,6 +112,52 @@ class Test_new_location():
             print("Отработано успешно. Место не изменено ")
         else:
             print("запрос ошибочный")
+
+
+        """УДАЛЕНИЕ НОВОЙ ЛОКАЦИИ """
+        print("______________")
+
+        delete_resource = "/maps/api/place/delete/json"
+        delete_url = base_url + delete_resource + key
+        json_for_delete_new_location = {
+                "place_id": place_id,
+            }
+        result_delete = requests.delete(delete_url, json = json_for_delete_new_location)
+        print (result_delete.text)
+
+        assert 200 == result_delete.status_code
+        if result_delete.status_code == 200:
+             print("Удаление новой локации прошло успешно")
+        else:
+             print("Удаление новой локации не произошло")
+
+        # теперь проверка сообщения ответа теста
+        check_delete = result_delete.json()
+        check_info_delete = check_delete.get("status")
+        assert check_info_delete == "OK"
+        print("Сообщение верно")
+
+
+        """ПРОВЕРКА УДАЛЕНИЯ НОВОЙ ЛОКАЦИИ.  """
+        print("______________")
+
+        result_get = requests.get(get_url)
+        print(result_get.text)
+        print("Статус код: " + str(result_get.status_code))
+        assert 404 == result_get.status_code
+        if result_get.status_code == 404:
+            print("Успешно. Проверка удаления нового места прошла успешно")
+        else:
+            print("запрос ошибочный")
+
+        # теперь проверка сообщения ответа теста
+        check_msg = result_get.json()
+        check_msg_info = check_msg.get("msg")
+        assert check_msg_info == "Get operation failed, looks like place_id  doesn't exists"
+        print("Сообщение верно")
+
+        print()
+        print("Тестирование Test_new_location завершено успешно")
 
 
 new_place = Test_new_location()
